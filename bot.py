@@ -16,15 +16,15 @@ def weather(message):
         w = el.select(".WeatherDetailsListItem--wxData--23DP5")[1].text
         w = w.replace('Wind Direction', '')
 
-        wat = el.select(".WeatherDetailsListItem--wxData--23DP5")[2].text
+        wet = el.select(".WeatherDetailsListItem--wxData--23DP5")[2].text
 
         p = el.select(".WeatherDetailsListItem--wxData--23DP5")[4].text
         p = p.replace("Arrow Down", '')
         p = p.replace("Arrow Up", '')
-    bot.send_message (message.chat.id, "Макс./Мин. - " + t)
-    bot.send_message (message.chat.id, "Ветер - " + w)
-    bot.send_message (message.chat.id, "Влажность - " + wat)
-    bot.send_message (message.chat.id, "Давление - " + p)
+    bot.send_message (message.chat.id, "Max./Min. - " + t)
+    bot.send_message (message.chat.id, "Wind - " + w)
+    bot.send_message (message.chat.id, "Wet - " + wet)
+    bot.send_message (message.chat.id, "Pressure - " + p)
 
 @bot.message_handler(commands=['start'])
 def hello(message):

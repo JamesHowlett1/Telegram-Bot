@@ -3,17 +3,28 @@ import config
 import requests
 from bs4 import BeautifulSoup as BS
 
-r = requests.get("https://sinoptik.ua/погода-москва")
+r = requests.get("https://weather.com/ru-RU/weather/today/l/RSXX0063:1:RS")
 html = BS(r.content, 'html.parser')
 
 bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(commands=['weather'])
 def weather(message):
-    for el in html.select("#blockDays"):
-        t_min = el.select(".temperature .min")[0].text
-        t_max = el.select(".temperature .max")[0].text
-    bot.send_message (message.chat.id, "Min temperature - " + str(t_min) + "\nMax temperature - " + str(t_max))
+    for el in html.select("#todayDetails"):
+        t = el.select(".WeatherDetailsListItem--wxData--23DP5")[0].text
+
+        w = el.select(".WeatherDetailsListItem--wxData--23DP5")[1].text
+        w = w.replace('Wind Direction', '')
+
+        wat = el.select(".WeatherDetailsListItem--wxData--23DP5")[2].text
+
+        p = el.select(".WeatherDetailsListItem--wxData--23DP5")[4].text
+        p = p.replace("Arrow Down", '')
+        p = p.replace("Arrow Up", '')
+    bot.send_message (message.chat.id, "Макс./Мин. - " + t)
+    bot.send_message (message.chat.id, "Ветер - " + w)
+    bot.send_message (message.chat.id, "Влажность - " + wat)
+    bot.send_message (message.chat.id, "Давление - " + p)
 
 @bot.message_handler(commands=['start'])
 def hello(message):
